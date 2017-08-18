@@ -1,13 +1,13 @@
 import json
+import os
 import asyncio
 import discord
 import utils as U
 from discord.ext.commands import Bot
 
 
-extensions = ['quote', 'cse']
 utils = U.Utils()
-bot = Bot(command_prefix=utils.config.get('command_prefix'), self_bot=True)
+bot = Bot(command_prefix=utils.config['command_prefix'], self_bot=True)
 utils.bot = bot
 
 
@@ -15,11 +15,6 @@ def is_self(other_id):
 
     # Compare other_id with our own id
     return other_id == bot.user.id
-
-
-@bot.command()
-async def embed(ctx):
-    pass # Not implemented
 
 
 @bot.command()
@@ -41,13 +36,21 @@ async def on_message(msg):
 
 @bot.event
 async def on_ready():
+
+    # Print something to let us know the bot has started
     print('Logged in as:', bot.user.name)
     print('User id:', bot.user.id)
     print('--------')
 
 
 if __name__ == '__main__':
-    for ext in extensions:
-        bot.load_extension(ext)
+
+    # Load extensions
+    for cog in os.listdir('cogs'):
+        name, extension = os.path.splitext(cog)
+        if extension == '.py':
+            bot.load_extension('cogs.{}'.format(name))
+
+    # Launch bot
     bot.run(utils.config['token'], bot=False)
 

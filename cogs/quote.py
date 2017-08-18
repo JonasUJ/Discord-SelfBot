@@ -1,4 +1,3 @@
-
 import discord
 from discord.ext import commands
 from utils import Utils
@@ -27,13 +26,12 @@ class Quote:
             await ctx.channel.send(content)
             return
 
-        # Get author of message
-        quoted = msg.author
-        quoted_roles = self.utils.get_roles(ctx.guild.id, quoted.id)
+        # Get roles of the message author
+        author_roles = self.utils.get_roles(ctx.guild.id, ctx.message.author.id)
 
         # Get colour of authors highest role
         colour = discord.Colour.default()
-        for role in quoted_roles:
+        for role in author_roles:
             colour = role.colour
             break
 
@@ -55,10 +53,8 @@ class Quote:
         if atts:
             emb.add_field(name='Attachments:', value='\n'.join(atts))
 
-        if self.utils.config.get('cogs').get('quote').get('timestamp'):
+        if self.utils.config['cogs']['quote']['timestamp']:
             emb.timestamp = msg.created_at
-
-        
 
         # Delete command and send result
         await ctx.message.delete()
@@ -67,4 +63,3 @@ class Quote:
 
 def setup(bot):
     bot.add_cog(Quote(bot))
-
