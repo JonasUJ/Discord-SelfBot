@@ -53,4 +53,3 @@ if __name__ == '__main__':
 
     # Launch bot
     bot.run(utils.config['token'], bot=False)
-

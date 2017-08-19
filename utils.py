@@ -16,6 +16,9 @@ class Utils:
                 "cse": {
                     "google_api_key": "No API Key",
                     "google_cse_id": "No CSE ID"
+                },
+                "code": {
+                    "timeout": 5
                 }
             }
         }
